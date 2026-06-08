@@ -153,6 +153,17 @@ Each guide or mod should use one of the following labels:
 - `Risky` - possible brick/damage risk
 - `Reference Only` - included for documentation, not recommended
 
+## References
+
+### GorGylka A5-V11 UDPBD Firmware
+
+GorGylka’s A5-V11 UDPBD project is used as an external reference for this project.
+
+Original GitHub repo:  
+https://github.com/GorGylka/UDPBD-A5-V11
+
+This repo is not copied, forked, or included here. It is only linked as a reference for research and comparison.
+
 ## Credit and Source Policy
 
 This project is built on community work.
