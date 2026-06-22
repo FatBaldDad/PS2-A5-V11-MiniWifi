@@ -65,7 +65,7 @@ telnet 192.168.100.1
 3. Open browser to `http://192.168.100.1`.
 4. Telnet to `192.168.100.1`.
 5. Login is usually `admin/admin`.
-6. In our tested unit, telnet dropped directly to BusyBox `ash` shell.
+6. In our tested unit, telnet opened directly into a BusyBox `ash` shell.
 
 ## 5. Confirm flash layout
 
