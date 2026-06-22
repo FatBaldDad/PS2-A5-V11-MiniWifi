@@ -232,7 +232,9 @@ mtd_write write /media/sda1/lede-ramips-rt305x-a5-v11-squashfs-sysupgrade.bin Ke
 reboot
 ```
 
-`uboot_usb_256_03.img` and `lede-ramips-rt305x-a5-v11-squashfs-sysupgrade.bin` are example filenames only. Use known-good A5-V11 images from your own verified build/output set or trusted release sources documented in this repository (see [`../Firmware/README.md`](../Firmware/README.md)), and confirm they match your board and target flash layout before writing.
+`uboot_usb_256_03.img` and `lede-ramips-rt305x-a5-v11-squashfs-sysupgrade.bin` are example filenames only.
+Use known-good A5-V11 images from your own verified build/output set or trusted release sources documented in this repository (see [`../Firmware/README.md`](../Firmware/README.md)).
+Before writing, confirm each image matches your board and target flash layout.
 
 > [!WARNING]
 > Only flash bootloader and firmware images intended for A5-V11 and compatible with the 16 MB layout. Keep original dumps as recovery images.
