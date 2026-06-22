@@ -232,6 +232,8 @@ mtd_write write /media/sda1/lede-ramips-rt305x-a5-v11-squashfs-sysupgrade.bin Ke
 reboot
 ```
 
+`uboot_usb_256_03.img` and `lede-ramips-rt305x-a5-v11-squashfs-sysupgrade.bin` are example filenames only. Use known-good A5-V11 images from your own verified build/output set or trusted release sources documented in this repository (see [`../Firmware/README.md`](../Firmware/README.md)), and confirm they match your board and target flash layout before writing.
+
 > [!WARNING]
 > Only flash bootloader and firmware images intended for A5-V11 and compatible with the 16 MB layout. Keep original dumps as recovery images.
 
@@ -249,4 +251,3 @@ reboot
 - MX25L12835F blank chip was programmed and verified with the padded 16 MB image.
 - Router booted OEM firmware after chip swap.
 - `cat /proc/mtd` reported `mtd0: 01000000`, confirming full 16 MB detection.
-
