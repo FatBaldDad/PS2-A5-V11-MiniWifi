@@ -99,6 +99,7 @@ This project documents:
 - MAC address preservation
 - 8 MB flash experiments
 - 16 MB flash experiments
+- [A5-V11 4 MB to 16 MB SPI Flash Upgrade Procedure](docs/A5-V11-4MB-to-16MB-Flash-Upgrade.md)
 - CH341A programming
 - UART recovery
 - U-Boot behavior
