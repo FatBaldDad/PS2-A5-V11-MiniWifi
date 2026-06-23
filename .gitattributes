@@ -1,6 +1,8 @@
 # Normalize shell and OpenWrt overlay scripts to LF for Linux/OpenWrt compatibility.
 *.sh text eol=lf
 *.uci text eol=lf
-openwrt-files/etc/init.d/* text eol=lf
-openwrt-files/usr/bin/* text eol=lf
-openwrt-files/www/cgi-bin/* text eol=lf
+
+openwrt-files/etc/init.d/** text eol=lf
+openwrt-files/usr/bin/** text eol=lf
+openwrt-files/www/cgi-bin/** text eol=lf
+scripts/*.sh text eol=lf
