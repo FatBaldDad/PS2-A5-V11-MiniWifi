@@ -1,0 +1,22 @@
+#!/bin/sh /etc/rc.common
+# Safe skeleton init service for future PS2 bridge firmware integration.
+# This script intentionally avoids real network or service changes for now.
+
+START=95
+
+start() {
+    echo "ps2bridge: starting (safe skeleton, no network changes)"
+}
+
+stop() {
+    echo "ps2bridge: stopping (safe skeleton, no network changes)"
+}
+
+restart() {
+    stop
+    start
+}
+
+status() {
+    /usr/bin/ps2bridge-status
+}

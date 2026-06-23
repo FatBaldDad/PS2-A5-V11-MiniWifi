@@ -1,0 +1,17 @@
+# Safe skeleton configuration for future PS2 bridge firmware integration.
+# This file provides defaults only and does not perform live network changes.
+
+config ps2bridge 'main'
+    option device_name 'PS2-A5-MiniWifi'
+    option management_ip '192.168.1.200'
+    option management_netmask '255.255.255.0'
+    option management_gateway '192.168.1.1'
+    option management_dns '192.168.1.1'
+    option ps2_side_ip '192.168.2.1'
+    option ps2_ip '192.168.2.10'
+    option ps2_netmask '255.255.255.0'
+    option smb_share 'PS2SMB'
+    option storage_path '/mnt/ps2'
+    option preferred_mode 'udpfs'
+    option udpbd_enabled '0'
+    option smb_enabled '0'

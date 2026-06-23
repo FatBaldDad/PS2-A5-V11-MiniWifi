@@ -1,0 +1,59 @@
+#!/bin/sh
+# Safe skeleton status endpoint for PS2 bridge integration.
+# This script is read-only and returns mock service states for now.
+
+get_uci_or_default() {
+    key="$1"
+    default="$2"
+
+    if command -v uci >/dev/null 2>&1; then
+        value="$(uci -q get "ps2bridge.main.${key}")"
+    else
+        value=""
+    fi
+
+    if [ -n "$value" ]; then
+        printf '%s' "$value"
+    else
+        printf '%s' "$default"
+    fi
+}
+
+device_name="$(get_uci_or_default device_name 'PS2-A5-MiniWifi')"
+management_ip="$(get_uci_or_default management_ip '192.168.1.200')"
+management_netmask="$(get_uci_or_default management_netmask '255.255.255.0')"
+management_gateway="$(get_uci_or_default management_gateway '192.168.1.1')"
+management_dns="$(get_uci_or_default management_dns '192.168.1.1')"
+ps2_side_ip="$(get_uci_or_default ps2_side_ip '192.168.2.1')"
+ps2_ip="$(get_uci_or_default ps2_ip '192.168.2.10')"
+ps2_netmask="$(get_uci_or_default ps2_netmask '255.255.255.0')"
+smb_share="$(get_uci_or_default smb_share 'PS2SMB')"
+storage_path="$(get_uci_or_default storage_path '/mnt/ps2')"
+preferred_mode="$(get_uci_or_default preferred_mode 'udpfs')"
+udpbd_enabled="$(get_uci_or_default udpbd_enabled '0')"
+smb_enabled="$(get_uci_or_default smb_enabled '0')"
+
+cat <<EOF
+{
+  "device_name": "$device_name",
+  "management_ip": "$management_ip",
+  "management_netmask": "$management_netmask",
+  "management_gateway": "$management_gateway",
+  "management_dns": "$management_dns",
+  "ps2_side_ip": "$ps2_side_ip",
+  "ps2_ip": "$ps2_ip",
+  "ps2_netmask": "$ps2_netmask",
+  "smb_share": "$smb_share",
+  "storage_path": "$storage_path",
+  "preferred_mode": "$preferred_mode",
+  "udpbd_enabled": "$udpbd_enabled",
+  "smb_enabled": "$smb_enabled",
+  "wifi_connected": false,
+  "ethernet_link": "unknown",
+  "usb_storage": "unknown",
+  "smb_status": "stopped",
+  "udpfs_status": "stopped",
+  "udpbd_status": "stopped",
+  "firmware_version": "preview-0.02"
+}
+EOF

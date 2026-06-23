@@ -1,0 +1,11 @@
+#!/bin/sh
+# Safe skeleton CGI status endpoint for future firmware integration.
+# This endpoint only returns mock/read-only status data.
+
+printf 'Content-Type: application/json\n\n'
+
+if [ -x /usr/bin/ps2bridge-status ]; then
+    /usr/bin/ps2bridge-status
+else
+    printf '{"error":"ps2bridge-status not found"}\n'
+fi
