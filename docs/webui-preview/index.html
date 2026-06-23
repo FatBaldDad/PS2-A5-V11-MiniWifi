@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>PS2 A5-V11 MiniWifi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <script defer src="js/app.js?v=2"></script>
 </head>
-<body style="background:#05070d;color:#6bb6ff;font-family:Arial;">
-    <h1>PS2 A5-V11 MiniWifi WebUI Preview</h1>
-    <p>If you can see this, the preview folder is working.</p>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <p class="eyebrow">FBD EtherDrive / A5-V11</p>
+            <h1>PS2 MiniWifi Bridge</h1>
+            <p class="subtitle">WebUI preview build v0.01</p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h2>Network</h2>
+                <p>A5 Management IP</p>
+                <strong>192.168.1.200</strong>
+            </div>
+
+            <div class="card">
+                <h2>PS2 Config</h2>
+                <p>Suggested PS2 IP</p>
+                <strong>192.168.2.10</strong>
+            </div>
+
+            <div class="card">
+                <h2>OPL SMB</h2>
+                <p>Share Name</p>
+                <strong>PS2SMB</strong>
+            </div>
+
+            <div class="card">
+                <h2>Neutrino</h2>
+                <p>Preferred Mode</p>
+                <strong>UDPFS</strong>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Setup Pages</h2>
+            <button>First Boot Setup</button>
+            <button>WiFi Setup</button>
+            <button>PS2 Network</button>
+            <button>OPL SMB</button>
+            <button>UDPFS / UDPBD</button>
+            <button>Firmware Update</button>
+        </section>
+    </main>
 </body>
 </html>
