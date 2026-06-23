@@ -200,6 +200,46 @@ Moahdib-style path note:
 - WT1520-8M is not the final solution for this project's 16 MB flash chip.
 - Likely final direction is a custom A5-V11 16 MB profile/layout or a carefully documented port from compatible larger-flash profiles.
 
+## 12a. A5-V11-16M ImageBuilder Test Result
+
+Local ImageBuilder test using LEDE 17.01.7 ramips/rt305x:
+
+Local changes made in ImageBuilder only:
+- Copied A5-V11.dts to A5-V11-16M.dts
+- Changed model to: A5-V11 (16M)
+- Changed firmware partition from reg = <0x50000 0x3b0000>; to reg = <0x50000 0xfb0000>;
+- Added local a5-v11-16M profile in target/linux/ramips/image/rt305x.mk:
+  - DTS := A5-V11-16M
+  - IMAGE_SIZE := 16064k
+  - DEVICE_TITLE := A5-V11 (16M research sysupgrade only)
+  - DEVICE_PACKAGES := kmod-usb-core kmod-usb-ohci kmod-usb2
+- Did not add factory.bin
+- Did not use poray-header
+- Patched local ImageBuilder metadata files .profiles.mk and .targetinfo
+
+Verified result:
+- make info successfully listed:
+```text
+a5-v11-16M:
+    A5-V11 (16M research sysupgrade only)
+    Packages: kmod-usb-core kmod-usb-ohci kmod-usb2
+```
+
+Build result:
+- The ImageBuilder test failed safely with error:
+```
+No rule to make target '/work/build_dir/target-mipsel_24kc_musl-1.1.16/linux-ramips_rt305x/a5-v11-16M-kernel.bin', needed by '/work/build_dir/target-mipsel_24kc_musl-1.1.16/linux-ramips_rt305x/tmp/lede-17.01.7-ramips-rt305x-a5-v11-16M-squashfs-sysupgrade.bin'
+```
+- No A5-V11-16M image was generated
+- No firmware was flashed
+
+Conclusion:
+- LEDE 17.01.7 ImageBuilder can assemble images for already-known/prebuilt profiles
+- ImageBuilder alone cannot build a brand-new DTS/profile target because it does not compile missing kernel/DTB artifacts
+- This confirmed ImageBuilder cannot compile brand-new DTS targets by itself; full source build is the next likely required path
+- Next research path: full source build in Ubuntu 18.04 Docker/container environment with proper A5-V11-16M DTS/profile in source
+- Failure note saved on compile server at: openwrt-checks/a5v11-profile-check/imagebuilder-17.01.7/lede-imagebuilder-17.01.7-ramips-rt305x.Linux-x86_64/_artifacts/a5-v11-16M-imagebuilder-failure-note.txt
+
 ## 12. MTD Partition Layout and Poray Header Findings
 
 Verified partition layouts from LEDE 17.01.7 DTS files:

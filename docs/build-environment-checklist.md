@@ -280,6 +280,14 @@ Flash safety for 16 MB A5-V11:
 - LEDE 17.01.7 ImageBuilder runs successfully in Ubuntu 18.04 Docker container with Python 2.7.17.
 - Docker version on host is 29.1.3.
 - Plain wt1520-8M image build completed and artifacts were saved to _artifacts/wt1520-8M-plain/.
+- A5-V11-16M ImageBuilder test was attempted locally using LEDE 17.01.7.
+- A5-V11-16M DTS was copied from A5-V11.dts with firmware partition expanded to 0xfb0000.
+- A local a5-v11-16M profile was added to rt305x.mk using 16064k image size and appropriate device packages.
+- make info successfully listed the a5-v11-16M profile.
+- ImageBuilder build for a5-v11-16M failed safely with missing kernel/DTB artifact error.
+- This confirmed ImageBuilder cannot compile brand-new DTS targets by itself; full source build is the next likely required path.
+- Failure note was saved on compile server at openwrt-checks/a5v11-profile-check/imagebuilder-17.01.7/.../_artifacts/a5-v11-16M-imagebuilder-failure-note.txt.
+- Next research path: full LEDE 17.01.7 source build with proper A5-V11-16M DTS/profile integration.
 - MTD partition layouts from A5-V11, WT1520-8M, NIXCORE-16M, and VOCORE-16M DTS verified.
 - mkporayfw matrix testing confirmed 4M/8M support and 16M rejection.
 - 18.06.9 ImageBuilder contains the a5-v11 profile.
