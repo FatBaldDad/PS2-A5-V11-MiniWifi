@@ -200,7 +200,74 @@ Moahdib-style path note:
 - WT1520-8M is not the final solution for this project's 16 MB flash chip.
 - Likely final direction is a custom A5-V11 16 MB profile/layout or a carefully documented port from compatible larger-flash profiles.
 
-## 12. Recovery Notes Placeholder
+## 12. MTD Partition Layout and Poray Header Findings
+
+Verified partition layouts from LEDE 17.01.7 DTS files:
+
+A5-V11 stock 4 MB layout:
+- u-boot: 0x00000 size 0x30000
+- u-boot-env: 0x30000 size 0x10000
+- factory: 0x40000 size 0x10000
+- firmware: 0x50000 size 0x3b0000
+
+WT1520-8M 8 MB layout (same protected boot/env/factory, expanded firmware):
+- u-boot: 0x00000 size 0x30000
+- u-boot-env: 0x30000 size 0x10000
+- factory: 0x40000 size 0x10000
+- firmware: 0x50000 size 0x7b0000
+
+LEDE 17.01.7 16 MB examples (NIXCORE-16M, VOCORE-16M):
+- firmware: 0x50000 size 0xfb0000
+
+Future A5-V11-16M DTS guidance:
+- Start from A5-V11.dts, not WT1520.dtsi
+- Keep A5-V11 board identity, GPIOs, LEDs, USB/root hub GPIO exports, Ethernet behavior, factory EEPROM/MAC location
+- Change only the firmware partition to: reg = <0x50000 0xfb0000>;
+- Do not base on WT1520.dtsi because it has different board identity, reset GPIO, and network/switch behavior
+
+Image size constants in LEDE 17.01.7:
+- ralink_default_fw_size_4M = 3866624
+- ralink_default_fw_size_8M = 8060928
+- ralink_default_fw_size_16M = 16121856
+- NIXCORE-16M and VOCORE-16M use IMAGE_SIZE := 16064k, matching the 0xfb0000 firmware partition
+- A future A5-V11-16M profile should likely use IMAGE_SIZE := 16064k or a clearly justified equivalent
+
+Poray header findings from LEDE 17.01.7 and mkporayfw matrix testing:
+
+- LEDE 17.01.7 uses mkporayfw through the poray-header build step
+- A5-V11 stock factory image uses: poray-header -B A5-V11 -F 4M
+- WT1520-8M factory image uses: poray-header -B WT1520 -F 8M
+- mkporayfw options include: -B (board), -H, -F (flash size), -f, -o (output), -i (inspect), -x (extract)
+- Matrix testing confirmed mkporayfw accepts 4M and 8M but rejects 16M with error: "unknown flash layout \"16M\""
+- Testing also showed:
+  - A5-V11 -F 4M and -F 8M produced byte-identical Poray-headered output from the same sysupgrade input
+  - WT1520 -F 4M and -F 8M produced byte-identical Poray-headered output from the same sysupgrade input
+  - Therefore the -F option may be accepted/validated without creating obvious byte-level layout difference, but do not assume all paths are safe
+
+## 13. Safety Rules for 16 MB Flash Layout
+
+Confirmed constraints:
+- Do not attempt poray-header -B A5-V11 -F 16M (mkporayfw rejects 16M)
+- A5-V11-16M factory image generation is unresolved
+- A5-V11-16M should initially be a custom sysupgrade/raw firmware research target, not factory/OEM-web flash target
+- Do not flash WT1520-8M to 16 MB A5-V11 as the final path
+
+Required before any 16 MB hardware flashing:
+- Verified full SPI recovery method
+- Known-good full flash backup
+- Confirmed bootloader behavior
+- Confirmed factory/calibration partition preservation
+- Confirmed OpenWrt MTD layout after boot
+- Serial console available
+
+Likely future A5-V11-16M path:
+1. Create A5-V11-16M DTS by copying A5-V11.dts and expanding firmware partition to 0xfb0000
+2. Create A5-V11-16M profile in rt305x.mk using A5-V11 board behavior and 16064k image size
+3. Initially avoid factory.bin or mark factory.bin as unsafe/unresolved
+4. Build and inspect sysupgrade/raw output only
+5. Test only after recovery process is documented and verified
+
+## 14. Recovery Notes Placeholder
 Recovery details are intentionally tracked separately.
 
 Placeholder references:

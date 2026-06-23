@@ -244,7 +244,34 @@ Before flashing first test image:
 - Do not use sysupgrade unless OpenWrt/LEDE is already running and board/layout compatibility is verified.
 - Before any flash, compare expected MTD partition layout, bootloader behavior, factory/calibration partition handling, and recovery method.
 
-## 14. Verified So Far
+## 14. Verified MTD Layout and Poray Header Findings
+
+Partition layouts verified from LEDE 17.01.7 DTS files:
+- A5-V11 stock firmware partition: 0x50000 size 0x3b0000 (4 MB flash)
+- WT1520-8M firmware partition: 0x50000 size 0x7b0000 (8 MB flash)
+- NIXCORE-16M and VOCORE-16M: 0x50000 size 0xfb0000 (16 MB flash)
+- Future A5-V11-16M should start from A5-V11.dts, not WT1520, and use 0xfb0000 firmware size
+
+Poray header matrix testing findings:
+- mkporayfw accepts 4M and 8M flash size flags
+- mkporayfw rejects 16M with error: "unknown flash layout \"16M\""
+- A5-V11 -F 4M and -F 8M produced byte-identical Poray-headered output from the same sysupgrade input
+- WT1520 -F 4M and -F 8M produced byte-identical Poray-headered output from the same sysupgrade input
+- A5-V11-16M factory image generation method is unresolved
+- Initial A5-V11-16M work should focus on sysupgrade/raw output, not factory.bin
+
+Image size constants in LEDE 17.01.7:
+- ralink_default_fw_size_4M = 3866624
+- ralink_default_fw_size_8M = 8060928
+- ralink_default_fw_size_16M = 16121856
+- Use IMAGE_SIZE := 16064k for 16 MB profiles (matching 0xfb0000 partition)
+
+Flash safety for 16 MB A5-V11:
+- Do not attempt poray-header -B A5-V11 -F 16M
+- Do not flash WT1520-8M as final path to 16 MB device
+- Require recovery method, flash backup, bootloader verification, MTD layout confirmation before testing
+
+## 15. Verified So Far
 - Ubuntu compile server is fbd@192.168.1.47.
 - Repo clone path on Ubuntu is ~/build/PS2-A5-V11-MiniWifi.
 - Safe overlay permission script works.
@@ -253,13 +280,15 @@ Before flashing first test image:
 - LEDE 17.01.7 ImageBuilder runs successfully in Ubuntu 18.04 Docker container with Python 2.7.17.
 - Docker version on host is 29.1.3.
 - Plain wt1520-8M image build completed and artifacts were saved to _artifacts/wt1520-8M-plain/.
+- MTD partition layouts from A5-V11, WT1520-8M, NIXCORE-16M, and VOCORE-16M DTS verified.
+- mkporayfw matrix testing confirmed 4M/8M support and 16M rejection.
 - 18.06.9 ImageBuilder contains the a5-v11 profile.
 - 19.07.10 profiles.json did not show an A5-V11 profile in the exact profile scan.
 - No firmware has been flashed yet.
 
-## 15. Open Questions
+## 16. Open Questions
+- For A5-V11-16M DTS creation, should we test-build before hardware validation using the planned partition and image size constants?
+- For A5-V11-16M initial sysupgrade testing, which recovery method is most practical: TFTP, UART console, or SPI programmer?
 - After LEDE 17.01.7 baseline work, which comparison candidate should be evaluated next: OpenWrt 18.06.9 or historical 15.05.1 reference checks?
-- For LEDE 17.01.7 results, should first profile validation on hardware begin with official a5-v11 or controlled WT1520-8M research path first?
-- For selected next release, does ImageBuilder provide all needed package and profile support?
-- If full source build is required, what is the minimal reproducible build recipe to preserve safety constraints?
-- What exact package set is needed to keep first image small, stable, and sufficient for safe validation?
+- For LEDE 17.01.7 sysupgrade validation, should hardware testing begin with official a5-v11 or controlled WT1520-8M research path first?
+- What is the minimum recovery setup required before any 16 MB device flashing is attempted?
