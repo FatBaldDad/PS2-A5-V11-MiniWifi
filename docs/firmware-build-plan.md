@@ -16,12 +16,43 @@ The repository already includes the first safe overlay plumbing:
 - Safe init skeleton in openwrt-files/etc/init.d/ps2bridge
 - Permission prep script for Ubuntu in scripts/fix-openwrt-permissions.sh
 
+Primary research/build baseline status:
+
+- LEDE Reboot 17.01.7 is now the primary research/build baseline for expanded-flash A5-V11 work.
+- OpenWrt 18.06.9 remains a later comparison point, not the first-choice build base.
+- OpenWrt 15.05 and 15.05.1 remain historically important for stock A5-V11 profile behavior and 4 MB-era layout.
+- OpenWrt 19.07.10 is not a first-choice target because the exact profiles.json scan did not show A5-V11.
+
+Verified so far:
+
+- Ubuntu compile server is fbd@192.168.1.47.
+- Repo clone path on Ubuntu is ~/build/PS2-A5-V11-MiniWifi.
+- Safe overlay permission script works.
+- ps2bridge-status outputs valid JSON.
+- LEDE 17.01.7 ramips/rt305x ImageBuilder contains the official A5-V11 profile.
+- LEDE 17.01.7 ramips/rt305x ImageBuilder also contains WT1520 4M and WT1520 8M profiles.
+- LEDE 17.01.7 ImageBuilder fails on Ubuntu 24.04 directly because it requires Python 2.x.
+- Docker 29.1.3 is installed on the compile server, and Ubuntu 18.04 container with Python 2.7.17 runs LEDE 17.01.7 ImageBuilder successfully.
+- Plain WT1520-8M ImageBuilder test build completed and artifacts were copied to _artifacts/wt1520-8M-plain/ for research only.
+- 19.07.10 profiles.json did not show an A5-V11 profile in the exact profile scan.
+- No firmware has been flashed yet.
+
 ## 3. Target Hardware
 - Device: A5-V11 mini router
-- SoC: RT5350F / Ralink RT5350
-- OpenWrt target family: ramips / rt305x
-- Flash: 16 MB SPI flash (upgraded)
+- Hardware SoC: RT5350F / Ralink/MediaTek RT5350F
+- CPU class: MIPS 24KEc / MIPS 24kc class at 360 MHz
 - RAM: 32 MB
+- Flash: upgraded 16 MB SPI flash for this project
+- Stock flash: 4 MB
+- OpenWrt target family: ramips
+- OpenWrt legacy subtarget folder: rt305x
+- OpenWrt profile: A5-V11 or a5-v11, depending on ImageBuilder version
+
+Do Not Confuse These:
+- RT5350F = actual chip on the A5-V11 board.
+- rt305x = OpenWrt legacy subtarget folder that includes the A5-V11 profile in older releases.
+- A5-V11 = board/profile name.
+- The A5-V11 is not physically an RT305x chip.
 
 ## 4. Repo Layout
 - Windows repository is for editing, planning, and WebUI preview work.
@@ -76,6 +107,15 @@ Planned default values for first safe image and status reporting:
 - First test firmware must not touch the factory/calibration partition.
 - First test firmware should be sysupgrade-only after OpenWrt is already installed.
 - Keep TFTP recovery notes in separate documentation.
+- Before any build or flash, confirm we are building for the A5-V11 profile on the ramips/rt305x OpenWrt target path, but remember the hardware is RT5350F.
+- Do not use a generic RT305x board profile.
+- Do not use RT5350F-OLinuXino as a substitute profile.
+- Do not use another RT5350 board profile unless intentionally porting and documenting why.
+- The WT1520-8M image is not an A5-V11 16 MB final firmware.
+- Do not flash WT1520-8M images to the 16 MB A5-V11 without a recovery plan and flash-layout verification.
+- Do not flash a factory image unless starting from the stock/OEM web UI.
+- Do not use sysupgrade unless OpenWrt/LEDE is already running and board/layout compatibility is verified.
+- Before any flash, compare expected MTD partition layout, bootloader behavior, factory/calibration partition handling, and recovery method.
 - Do not assume eth0 vs eth0.1 yet; board variants may differ.
 - Keep first build behavior conservative and recoverable.
 
@@ -86,6 +126,14 @@ Ubuntu build server responsibilities:
 - Consume repository overlay content as provided
 - Run permission normalization helper before build inputs are packed
 - Avoid editing source-of-truth project files directly
+- For LEDE 17.01.7 ImageBuilder, use an Ubuntu 18.04 Docker container with Python 2.7 compatibility
+
+Build environment finding:
+
+- LEDE 17.01.7 ImageBuilder fails on Ubuntu 24.04 directly because it requires Python 2.x.
+- Do not use FORCE=1 as the normal solution.
+- Docker was installed on the Ubuntu compile server (Docker 29.1.3 from Ubuntu docker.io).
+- Ubuntu 18.04 Docker container successfully runs LEDE 17.01.7 ImageBuilder with Python 2.7.17.
 
 Windows workstation responsibilities:
 
@@ -102,13 +150,22 @@ Planned next step (documentation only):
   - syncs the latest repository branch
   - applies overlay into OpenWrt tree
   - runs scripts/fix-openwrt-permissions.sh
-  - runs target profile build for ramips/rt305x
+  - runs target profile build for ramips/rt305x using LEDE 17.01.7 baseline first
   - outputs artifact list and checksums
+
+Candidate order for current research phase:
+
+1. LEDE 17.01.7 ramips/rt305x as the primary research baseline.
+2. WT1520-8M as a proven Moahdib-style expanded-flash research path.
+3. A future custom A5-V11 16 MB profile/layout as the likely final project target.
+4. OpenWrt 18.06.9 as a later comparison candidate.
+5. OpenWrt 15.05.1 as historical stock A5-V11 reference.
+6. OpenWrt 19.07.10 as not first choice.
 
 ## 11. Test Checklist Before Flashing
 Pre-flash checks for first safe image:
 
-- Confirm target profile is A5-V11-compatible under ramips/rt305x.
+- Confirm target profile is the official A5-V11 profile under ramips/rt305x, and remember hardware SoC is RT5350F.
 - Confirm image type is sysupgrade (not bootloader flashing path).
 - Confirm overlay contains only intended safe files.
 - Confirm /www/ps2 exists in rootfs artifact.
@@ -117,7 +174,31 @@ Pre-flash checks for first safe image:
 - Confirm /etc/init.d/ps2bridge exists and is executable.
 - Confirm /etc/config/ps2bridge contains expected defaults.
 - Confirm no scripts attempt live network reconfiguration.
+- Confirm expected MTD partition layout and bootloader behavior match flash plan.
+- Confirm factory/calibration partition handling and recovery method before any flash.
 - Confirm rollback path is documented before device flash.
+
+LEDE 17.01.7 ImageBuilder profile verification currently confirmed:
+
+```text
+a5-v11:
+  A5-V11
+  Packages: kmod-usb-core kmod-usb-ohci kmod-usb2
+
+wt1520-4M:
+  Nexx WT1520 (4MB)
+
+wt1520-8M:
+  Nexx WT1520 (8MB)
+```
+
+Moahdib-style path note:
+
+- Moahdib's known working PS2 SMB approach used LEDE Reboot 17.01.7 with upgraded 8 MB flash A5-V11.
+- That approach used WT1520-8M because it is hardware-compatible enough and already has an 8 MB flash layout.
+- This is useful evidence for expanded-flash A5-V11 research.
+- WT1520-8M is not the final solution for this project's 16 MB flash chip.
+- Likely final direction is a custom A5-V11 16 MB profile/layout or a carefully documented port from compatible larger-flash profiles.
 
 ## 12. Recovery Notes Placeholder
 Recovery details are intentionally tracked separately.
