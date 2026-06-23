@@ -1,0 +1,267 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PS2 A5-V11 MiniWifi WebUI Mockup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css?v=3">
+    <script defer src="js/app.js?v=3"></script>
+</head>
+<body>
+    <div class="space-overlay" aria-hidden="true"></div>
+
+    <main class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <p class="brand-kicker">FBD EtherDrive / A5-V11</p>
+                <h1>PS2 MiniWifi</h1>
+                <p class="brand-subtitle">WebUI Mock Preview v0.02</p>
+            </div>
+
+            <nav class="menu" aria-label="Main navigation">
+                <button class="menu-item is-active" data-target="dashboard">Dashboard</button>
+                <button class="menu-item" data-target="first-boot-setup">First Boot Setup</button>
+                <button class="menu-item" data-target="wifi-setup">WiFi Setup</button>
+                <button class="menu-item" data-target="ps2-network">PS2 Network</button>
+                <button class="menu-item" data-target="opl-smb">OPL SMB</button>
+                <button class="menu-item" data-target="neutrino-modes">Neutrino UDPFS / UDPBD</button>
+                <button class="menu-item" data-target="usb-storage">USB Storage</button>
+                <button class="menu-item" data-target="firmware-update">Firmware Update</button>
+                <button class="menu-item" data-target="logs">Logs</button>
+            </nav>
+        </aside>
+
+        <section class="content" aria-live="polite">
+            <article class="view is-visible" id="dashboard" data-view>
+                <header class="view-header">
+                    <h2>Dashboard</h2>
+                    <p>Real-time style mock overview for PS2 bridge status.</p>
+                </header>
+
+                <div class="cards-grid">
+                    <section class="panel-card stat-card">
+                        <h3>Management Network</h3>
+                        <p class="meta">A5 Management IP</p>
+                        <strong>192.168.1.200</strong>
+                    </section>
+                    <section class="panel-card stat-card">
+                        <h3>PS2 Network</h3>
+                        <p class="meta">A5 PS2-side IP</p>
+                        <strong>192.168.2.1</strong>
+                    </section>
+                    <section class="panel-card stat-card">
+                        <h3>OPL SMB Share</h3>
+                        <p class="meta">Configured share</p>
+                        <strong>PS2SMB</strong>
+                    </section>
+                    <section class="panel-card stat-card">
+                        <h3>Neutrino Mode</h3>
+                        <p class="meta">Preferred transport</p>
+                        <strong>UDPFS</strong>
+                    </section>
+                </div>
+
+                <section class="panel-card">
+                    <h3>Quick Actions</h3>
+                    <div class="button-row">
+                        <button class="action">Open First Boot Setup</button>
+                        <button class="action">Scan WiFi Networks</button>
+                        <button class="action">View Latest Logs</button>
+                    </div>
+                </section>
+            </article>
+
+            <article class="view" id="first-boot-setup" data-view hidden>
+                <header class="view-header">
+                    <h2>First Boot Setup</h2>
+                    <p>Mock first-run essentials for A5 management network and service presets.</p>
+                </header>
+                <section class="panel-card form-grid">
+                    <label>A5 Management IP
+                        <input type="text" value="192.168.1.200">
+                    </label>
+                    <label>Gateway
+                        <input type="text" value="192.168.1.1">
+                    </label>
+                    <label>DNS
+                        <input type="text" value="192.168.1.1">
+                    </label>
+                </section>
+                <div class="button-row">
+                    <button class="action">Save First Boot Defaults</button>
+                    <button class="action alt">Restore Suggested Defaults</button>
+                </div>
+            </article>
+
+            <article class="view" id="wifi-setup" data-view hidden>
+                <header class="view-header">
+                    <h2>WiFi Setup</h2>
+                    <p>Mock client mode setup for joining home router WiFi.</p>
+                </header>
+                <section class="panel-card form-grid">
+                    <label>SSID
+                        <input type="text" value="MyHomeWiFi-2G">
+                    </label>
+                    <label>Security
+                        <select>
+                            <option selected>WPA2-PSK</option>
+                            <option>WPA/WPA2 Mixed</option>
+                            <option>Open</option>
+                        </select>
+                    </label>
+                    <label>Signal Profile
+                        <select>
+                            <option selected>Balanced</option>
+                            <option>High Stability</option>
+                            <option>High Throughput</option>
+                        </select>
+                    </label>
+                </section>
+                <div class="button-row">
+                    <button class="action">Scan Networks</button>
+                    <button class="action">Apply WiFi Profile</button>
+                </div>
+            </article>
+
+            <article class="view" id="ps2-network" data-view hidden>
+                <header class="view-header">
+                    <h2>PS2 Network</h2>
+                    <p>Mock LAN profile between A5 and PS2 ethernet.</p>
+                </header>
+                <section class="panel-card form-grid">
+                    <label>A5 PS2-side IP
+                        <input type="text" value="192.168.2.1">
+                    </label>
+                    <label>Suggested PS2 IP
+                        <input type="text" value="192.168.2.10">
+                    </label>
+                    <label>Subnet Mask
+                        <input type="text" value="255.255.255.0">
+                    </label>
+                </section>
+                <div class="button-row">
+                    <button class="action">Apply PS2 Network</button>
+                    <button class="action alt">Run Connectivity Test</button>
+                </div>
+            </article>
+
+            <article class="view" id="opl-smb" data-view hidden>
+                <header class="view-header">
+                    <h2>OPL SMB</h2>
+                    <p>Mock OPL SMB service and share options.</p>
+                </header>
+                <section class="panel-card form-grid">
+                    <label>SMB Share Name
+                        <input type="text" value="PS2SMB">
+                    </label>
+                    <label>Storage Path
+                        <input type="text" value="/mnt/ps2">
+                    </label>
+                    <label>SMB Version
+                        <select>
+                            <option selected>SMB1 (OPL Compatible)</option>
+                            <option>SMB2 (Experimental)</option>
+                        </select>
+                    </label>
+                </section>
+                <div class="button-row">
+                    <button class="action">Start SMB Service</button>
+                    <button class="action">Save SMB Settings</button>
+                </div>
+            </article>
+
+            <article class="view" id="neutrino-modes" data-view hidden>
+                <header class="view-header">
+                    <h2>Neutrino UDPFS / UDPBD</h2>
+                    <p>Mock transport mode tuning for Neutrino loader.</p>
+                </header>
+                <section class="panel-card form-grid">
+                    <label>Preferred Mode
+                        <select>
+                            <option selected>UDPFS</option>
+                            <option>UDPBD</option>
+                        </select>
+                    </label>
+                    <label>Optional Mode
+                        <input type="text" value="UDPBD">
+                    </label>
+                    <label>Storage Path
+                        <input type="text" value="/mnt/ps2">
+                    </label>
+                </section>
+                <div class="button-row">
+                    <button class="action">Switch to UDPFS</button>
+                    <button class="action alt">Switch to UDPBD</button>
+                </div>
+            </article>
+
+            <article class="view" id="usb-storage" data-view hidden>
+                <header class="view-header">
+                    <h2>USB Storage</h2>
+                    <p>Mock mount state, filesystem details, and maintenance actions.</p>
+                </header>
+                <section class="cards-grid">
+                    <section class="panel-card">
+                        <h3>Primary Mount</h3>
+                        <p class="meta">Path: /mnt/ps2</p>
+                        <p>Status: Mounted (mock)</p>
+                    </section>
+                    <section class="panel-card">
+                        <h3>Filesystem</h3>
+                        <p class="meta">Type: exFAT (mock)</p>
+                        <p>Free Space: 82.4 GB (mock)</p>
+                    </section>
+                </section>
+                <div class="button-row">
+                    <button class="action">Remount Drive</button>
+                    <button class="action">Run Integrity Check</button>
+                </div>
+            </article>
+
+            <article class="view" id="firmware-update" data-view hidden>
+                <header class="view-header">
+                    <h2>Firmware Update</h2>
+                    <p>Mock firmware controls with no real flashing actions.</p>
+                </header>
+                <section class="panel-card form-grid">
+                    <label>Current Build
+                        <input type="text" value="A5-V11-Preview-0.02" readonly>
+                    </label>
+                    <label>Upload File
+                        <input type="text" value="No file selected" readonly>
+                    </label>
+                    <label>Backup Before Update
+                        <select>
+                            <option selected>Enabled</option>
+                            <option>Disabled</option>
+                        </select>
+                    </label>
+                </section>
+                <div class="button-row">
+                    <button class="action">Choose Firmware File</button>
+                    <button class="action danger">Start Mock Update</button>
+                </div>
+            </article>
+
+            <article class="view" id="logs" data-view hidden>
+                <header class="view-header">
+                    <h2>Logs</h2>
+                    <p>Mock system and service logs for preview only.</p>
+                </header>
+                <section class="panel-card">
+                    <pre class="log-window">[06:08:12] netifd: WAN connected via wlan0 (mock)
+[06:08:44] smbd: Share PS2SMB exported from /mnt/ps2 (mock)
+[06:09:03] neutrino: Default transport set to UDPFS (mock)
+[06:10:15] usb-storage: Device mounted at /mnt/ps2 (mock)
+[06:10:47] updater: No pending firmware operations (mock)</pre>
+                </section>
+                <div class="button-row">
+                    <button class="action">Refresh Logs</button>
+                    <button class="action">Download Log Bundle</button>
+                    <button class="action alt">Clear Log View</button>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
