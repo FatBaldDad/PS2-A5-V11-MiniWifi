@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS2-A5-V11 MiniWifi WebUI Preview</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <header class="topbar panel">
+    <h1>PS2-A5-V11 MiniWifi</h1>
+    <p>Static WebUI Mockup (Preview)</p>
+  </header>
+
+  <main class="layout">
+    <nav class="panel side-nav" aria-label="Sections">
+      <h2>Sections</h2>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#first-boot">First Boot Setup</a>
+      <a href="#wifi">WiFi Setup</a>
+      <a href="#ps2-network">PS2 Network Config</a>
+      <a href="#opl-smb">OPL SMB Setup</a>
+      <a href="#neutrino">Neutrino UDPFS/UDPBD Setup</a>
+      <a href="#usb">USB Storage Status</a>
+      <a href="#firmware">Firmware Update</a>
+      <a href="#logs">Logs</a>
+    </nav>
+
+    <section class="content">
+      <article id="dashboard" class="panel">
+        <h2>Dashboard</h2>
+        <div class="status-grid">
+          <div class="status"><span>WiFi</span><strong data-status="wifi" class="on">Connected</strong></div>
+          <div class="status"><span>Ethernet / PS2 Link</span><strong data-status="eth" class="on">Link Up</strong></div>
+          <div class="status"><span>USB Storage</span><strong data-status="usb" class="on">Mounted</strong></div>
+          <div class="status"><span>SMB Service</span><strong data-status="smb" class="on">Running</strong></div>
+          <div class="status"><span>UDPFS Service</span><strong data-status="udpfs" class="on">Running (Preferred)</strong></div>
+          <div class="status"><span>UDPBD Service</span><strong data-status="udpbd" class="off">Optional / Disabled</strong></div>
+        </div>
+        <p class="firmware">Firmware Version: <strong>vX.Y.Z (placeholder)</strong></p>
+      </article>
+
+      <article id="first-boot" class="panel">
+        <h2>First Boot Setup</h2>
+        <div class="grid two">
+          <label>A5 Management IP<input type="text" value="192.168.1.200" readonly></label>
+          <label>Netmask<input type="text" value="255.255.255.0" readonly></label>
+          <label>Gateway<input type="text" value="192.168.1.1" readonly></label>
+          <label>DNS<input type="text" value="192.168.1.1" readonly></label>
+        </div>
+        <button class="btn">Save Defaults</button>
+      </article>
+
+      <article id="wifi" class="panel">
+        <h2>WiFi Setup</h2>
+        <div class="grid two">
+          <label>SSID<input type="text" value="PS2-MiniWifi" readonly></label>
+          <label>Security<input type="text" value="WPA2-PSK" readonly></label>
+          <label>Password<input type="password" value="mockpassword" readonly></label>
+          <label>Channel<input type="text" value="Auto" readonly></label>
+        </div>
+        <button class="btn">Scan Networks</button>
+      </article>
+
+      <article id="ps2-network" class="panel">
+        <h2>PS2 Network Config</h2>
+        <div class="grid two">
+          <label>PS2 IP<input type="text" value="192.168.2.10" readonly></label>
+          <label>A5 PS2-side IP<input type="text" value="192.168.2.1" readonly></label>
+          <label>Subnet<input type="text" value="255.255.255.0" readonly></label>
+          <label>Mode<input type="text" value="Bridge to WiFi" readonly></label>
+        </div>
+        <button class="btn">Apply PS2 Network</button>
+      </article>
+
+      <article id="opl-smb" class="panel">
+        <h2>OPL SMB Setup</h2>
+        <div class="grid two">
+          <label>SMB Share<input type="text" value="PS2SMB" readonly></label>
+          <label>Storage Path<input type="text" value="/mnt/ps2" readonly></label>
+          <label>SMB Version<input type="text" value="SMB1 (OPL Compatible)" readonly></label>
+          <label>Guest Access<input type="text" value="Enabled (Mock)" readonly></label>
+        </div>
+        <button class="btn">Restart SMB Service</button>
+      </article>
+
+      <article id="neutrino" class="panel">
+        <h2>Neutrino UDPFS/UDPBD Setup</h2>
+        <div class="grid two">
+          <label>Preferred Protocol<input type="text" value="UDPFS" readonly></label>
+          <label>UDPBD<input type="text" value="Optional" readonly></label>
+          <label>UDPFS Port<input type="text" value="20001" readonly></label>
+          <label>UDPBD Port<input type="text" value="20000" readonly></label>
+        </div>
+        <div class="btn-row">
+          <button class="btn" data-toggle="udpfs">Toggle UDPFS</button>
+          <button class="btn" data-toggle="udpbd">Toggle UDPBD</button>
+        </div>
+      </article>
+
+      <article id="usb" class="panel">
+        <h2>USB Storage Status</h2>
+        <div class="status-grid single">
+          <div class="status"><span>Device</span><strong>USB 2.0 Flash Drive (Mock)</strong></div>
+          <div class="status"><span>Mount Point</span><strong>/mnt/ps2</strong></div>
+          <div class="status"><span>Filesystem</span><strong>exFAT</strong></div>
+          <div class="status"><span>Space</span><strong>128 GB total / 84 GB free</strong></div>
+        </div>
+        <button class="btn">Rescan USB</button>
+      </article>
+
+      <article id="firmware" class="panel">
+        <h2>Firmware Update</h2>
+        <p>Current: <strong>vX.Y.Z (placeholder)</strong></p>
+        <p>Latest: <strong>vX.Y.Z+1 (mock)</strong></p>
+        <div class="btn-row">
+          <button class="btn">Check for Updates</button>
+          <button class="btn">Upload Firmware</button>
+        </div>
+      </article>
+
+      <article id="logs" class="panel">
+        <h2>Logs</h2>
+        <pre id="logbox">[00:00:01] boot: system initialized
+[00:00:03] net: wlan0 connected
+[00:00:05] ps2: ethernet link up
+[00:00:08] smb: service started
+[00:00:10] udpfs: service running (preferred)
+[00:00:11] udpbd: optional service disabled</pre>
+        <button class="btn" id="add-log">Add Mock Log Entry</button>
+      </article>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
